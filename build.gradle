@@ -1,0 +1,179 @@
+ext {
+    frameworkParentVersion = '1.1.8'
+    springBootVersion = '1.5.12.RELEASE'
+    lombokVersion = '1.16.20'
+    guavaVersion = '22.0'
+    jodaTimeVersion = '2.9.9'
+    commonsIOVersion = '2.4'
+    commonsLangVersion = '2.6'
+    commonsLang3Version = '3.7'
+    commonsCodecVersion = '1.11'
+    httpClientVersion = '4.5.6'
+    jooqVersion = '3.9.6'
+    mybatisSpringVersion = '1.2.0'
+    mybatisPagehelperVersion = '5.1.1'
+    mysqlConnectorVersion = '5.1.41'
+    springVersion = '4.3.15.RELEASE'
+    druidVersion = '1.1.10'
+    reflectionsVersion = '0.9.10'
+    swaggerVersion = '2.8.0'
+    fastjsonVersion = '1.2.62'
+
+    env = System.getProperty("env") == null ? "development" : System.getProperty("env")
+}
+
+buildscript {
+
+    ext {
+        springBootVersion = '1.5.12.RELEASE'
+        dependencyManagementPluginVersion = '0.6.1.RELEASE'
+    }
+
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+    }
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    group 'com.bigdata'
+    version '1.0-SNAPSHOT'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        mavenCentral()
+    }
+
+    configurations {
+        all*.exclude group: "ch.qos.logback"
+        all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
+        all*.exclude module: 'spring-boot-actuator'
+        all*.exclude module: 'spring-boot-starter-actuator'
+    }
+
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+
+    dependencies {
+        testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+                artifact(sourcesJar) {
+                    classifier = 'sources'
+                }
+                pom.withXml {
+                    asNode().dependencies.dependency.each {
+                        dep ->
+                            if (dep.version.text() == "unspecified") {
+                                dep.getAt('groupId').get(0).setValue(project.group)
+                                dep.getAt('version').get(0).setValue(project.version)
+                            }
+                    }
+                }
+            }
+        }
+    }
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = ["src/main/java"]
+            }
+            resources {
+                srcDirs = ["src/main/resources/base", "src/main/resources/$env"]
+            }
+        }
+        test {
+            java {
+                srcDirs = ["src/test/java"]
+            }
+            resources {
+                srcDirs = ["src/test/resources/base", "src/test/resources/$env"]
+            }
+        }
+    }
+
+    test {
+        jvmArgs "-Dfile.encoding=UTF-8"
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+}
+
+project(":uno-common") {
+    dependencies {
+        compile "org.projectlombok:lombok:$lombokVersion"
+        compile "com.google.guava:guava:$guavaVersion"
+        compile "joda-time:joda-time:$jodaTimeVersion"
+        compile "commons-io:commons-io:$commonsIOVersion"
+        compile "commons-lang:commons-lang:$commonsLangVersion"
+        compile "commons-codec:commons-codec:$commonsCodecVersion"
+        compile "org.apache.commons:commons-lang3:$commonsLang3Version"
+        compile "org.apache.httpcomponents:httpclient:$httpClientVersion"
+        compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+
+    }
+}
+
+project(":uno-repository") {
+    dependencies {
+        compile project(":uno-common")
+        compile "org.jooq:jooq:$jooqVersion"
+        compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisSpringVersion"
+        compile "com.github.pagehelper:pagehelper:$mybatisPagehelperVersion"
+        compile "mysql:mysql-connector-java:$mysqlConnectorVersion"
+        compile "com.alibaba:druid-spring-boot-starter:$druidVersion"
+
+    }
+}
+
+project(":uno-service") {
+    dependencies {
+        compile project(":uno-repository")
+        compile "org.springframework:spring-context-support:$springVersion"
+        compile "org.reflections:reflections:$reflectionsVersion"
+        compile "org.springframework:spring-context-support:$springVersion"
+    }
+}
+
+project(":uno-api") {
+    apply plugin: 'org.springframework.boot'
+    jar.archiveName = 'uno-api.jar'
+
+    springBoot {
+        mainClass = "com.bigdata.uno.api.UnoApi"
+    }
+    dependencies {
+        compile project(":uno-service")
+        compile "com.alibaba:fastjson:$fastjsonVersion"
+        compile "org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion"
+        compile "org.springframework.boot:spring-boot-starter-aop:$springBootVersion"
+        compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+        compile "org.springframework.boot:spring-boot-starter-cache:$springBootVersion"
+        compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+        compile "io.springfox:springfox-swagger2:$swaggerVersion"
+        compile "io.springfox:springfox-swagger-ui:$swaggerVersion"
+    }
+}

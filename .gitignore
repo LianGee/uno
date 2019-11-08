@@ -1,0 +1,10 @@
+gradlew*
+gradle/
+.idea
+.gradle
+build
+*.iml
+*.class
+*/out/
+.DS_Store
+*.log

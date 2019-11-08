@@ -1,0 +1,7 @@
+rootProject.name = 'uno'
+
+include 'uno-api'
+include 'uno-common'
+include 'uno-repository'
+include 'uno-service'
+

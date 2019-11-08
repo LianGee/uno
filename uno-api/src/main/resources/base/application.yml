@@ -1,0 +1,10 @@
+server:
+  port: 9577
+  tomcat:
+    uri-encoding: UTF-8
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+
+spring.session.store-type: none
+
