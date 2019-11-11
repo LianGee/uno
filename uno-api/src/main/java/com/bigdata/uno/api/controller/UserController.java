@@ -21,11 +21,11 @@ public class UserController {
 
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     public Response getAll() {
-        return Response.success(userService.getAllUsers());
+        return Response.success(userService.queryAll());
     }
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     public Response getUserById(@PathVariable(value = "id") Long id) {
-        return Response.success(userService.getUserById(id));
+        return Response.success(userService.queryById(id));
     }
 }

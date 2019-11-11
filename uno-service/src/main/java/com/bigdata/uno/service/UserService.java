@@ -7,7 +7,7 @@ import java.util.List;
 public interface UserService {
     Long register(User user);
 
-    User getUserById(Long id);
+    User queryById(Long id);
 
-    List<User> getAllUsers();
+    List<User> queryAll();
 }

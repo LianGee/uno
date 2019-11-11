@@ -1,7 +1,7 @@
 package com.bigdata.uno.repository.base;
 
 
-import com.bigdata.uno.common.model.user.User;
+import com.bigdata.uno.common.model.business.Business;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -76,6 +76,10 @@ public class RepositoryGenerator {
             + "                       @Param(\"new\") {{entity-class-name}} newEntity);\n"
             + "\n"
             + "    @Override\n"
+            + "    @UpdateProvider(type = SqlProvider.class, method = \"updateNotNullFields\")\n"
+            + "    int updateNotNullFields({{entity-class-name}} entity);\n"
+            + "\n"
+            + "    @Override\n"
             + "    @UpdateProvider(type = SqlProvider.class, method = \"softDelete\")\n"
             + "    int delete(Long id);\n"
             + "\n"
@@ -108,8 +112,6 @@ public class RepositoryGenerator {
     }
 
     public static void main(String[] args) {
-
-        generate("bochen", "user", User.class);
-
+        generate("bchen", "business", Business.class);
     }
 }

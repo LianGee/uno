@@ -124,6 +124,7 @@ allprojects {
 
 project(":uno-common") {
     dependencies {
+        compile "com.alibaba:fastjson:$fastjsonVersion"
         compile "org.projectlombok:lombok:$lombokVersion"
         compile "com.google.guava:guava:$guavaVersion"
         compile "joda-time:joda-time:$jodaTimeVersion"
@@ -167,7 +168,6 @@ project(":uno-api") {
     }
     dependencies {
         compile project(":uno-service")
-        compile "com.alibaba:fastjson:$fastjsonVersion"
         compile "org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion"
         compile "org.springframework.boot:spring-boot-starter-aop:$springBootVersion"
         compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
