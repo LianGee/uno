@@ -22,6 +22,9 @@ public class ModelUtil {
                 field.setAccessible(true);
                 JSONColumn jsonColumn = field.getAnnotation(JSONColumn.class);
                 Field modelField = modelMap.get(field.getName());
+                if (modelField == null || !modelField.getName().equals(field.getName())) {
+                    continue;
+                }
                 modelField.setAccessible(true);
                 if (jsonColumn != null) {
                     field.set(pojo, JSON.parseObject((String) modelField.get(model), field.getGenericType()));
@@ -51,6 +54,9 @@ public class ModelUtil {
                 field.setAccessible(true);
                 JSONColumn jsonColumn = field.getAnnotation(JSONColumn.class);
                 Field modelField = modelMap.get(field.getName());
+                if (modelField == null || !modelField.getName().equals(field.getName())) {
+                    continue;
+                }
                 modelField.setAccessible(true);
                 if (jsonColumn != null) {
                     modelField.set(model, JSON.toJSONString(field.get(pojo)));

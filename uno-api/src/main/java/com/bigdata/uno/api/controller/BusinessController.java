@@ -24,8 +24,11 @@ public class BusinessController {
 
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)
     public Response queryById(@PathVariable Long id) {
-        BusinessPojo pojo = BusinessPojo.builder().build();
-        ModelUtil.modelToPojo(businessService.queryById(id), pojo);
-        return Response.success(pojo);
+        return Response.success(businessService.queryById(id));
+    }
+
+    @RequestMapping(value = "/query/all", method = RequestMethod.GET)
+    public Response queryAll() {
+        return Response.success(businessService.queryAll());
     }
 }

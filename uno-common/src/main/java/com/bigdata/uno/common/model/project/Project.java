@@ -38,4 +38,7 @@ public class Project extends BaseEntity<Project, Long> {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "logo")
+    private String logo;
 }

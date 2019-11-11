@@ -14,4 +14,6 @@ public interface Constant {
         int TO_ACCEPTANCE = 6; //转验收
         int ACCEPTED = 7; //验收通过
     }
+
+    String MD5_SALT = "asdf";
 }

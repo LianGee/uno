@@ -59,6 +59,10 @@ public interface ProjectRepository extends BaseRepository<Project> {
                        @Param("new") Project newEntity);
 
     @Override
+    @UpdateProvider(type = SqlProvider.class, method = "updateNotNullFields")
+    int updateNotNullFields(Project entity);
+
+    @Override
     @UpdateProvider(type = SqlProvider.class, method = "softDelete")
     int delete(Long id);
 
@@ -69,7 +73,7 @@ public interface ProjectRepository extends BaseRepository<Project> {
     @Override
     @SelectProvider(type = SqlProvider.class, method = "selectPage")
     Page<Project> selectPage(@Param("option") ListOption option,
-                               @Param("pageNumKey") Long pageNum,
-                               @Param("pageSizeKey") Long pageSize);
+                             @Param("pageNumKey") Long pageNum,
+                             @Param("pageSizeKey") Long pageSize);
 
 }
