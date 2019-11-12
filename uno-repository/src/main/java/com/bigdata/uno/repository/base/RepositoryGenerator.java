@@ -1,7 +1,7 @@
 package com.bigdata.uno.repository.base;
 
 
-import com.bigdata.uno.common.model.business.BusinessPoJo;
+import com.bigdata.uno.common.model.requirement.RequirementPoJo;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -11,7 +11,7 @@ import java.awt.datatransfer.Transferable;
 /**
  * Repository 代码生成器
  *
- * @author luxun
+ * @author zaoshu
  */
 public class RepositoryGenerator {
     private static final String REPOSITORY_PACKAGE = "com.bigdata.uno.repository";
@@ -112,6 +112,6 @@ public class RepositoryGenerator {
     }
 
     public static void main(String[] args) {
-        generate("bchen", "business", BusinessPoJo.class);
+        generate("bchen", "requirement", RequirementPoJo.class);
     }
 }

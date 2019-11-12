@@ -28,8 +28,8 @@ CREATE TABLE `user` (
   KEY `idx_is_delete` (`is_delete`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户表'
 
---- projectPoJo
-CREATE TABLE `projectPoJo` (
+--- project
+CREATE TABLE `project` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(50) NOT NULL COMMENT '项目名',
   `owner` varchar(1024) DEFAULT '[]' COMMENT '负责人',
@@ -52,8 +52,8 @@ CREATE TABLE `projectPoJo` (
   KEY `idk_business_id` (`business_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='项目'
 
---- businessPoJo
-CREATE TABLE `businessPoJo` (
+--- business
+CREATE TABLE `business` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(50) NOT NULL DEFAULT '' COMMENT '业务线名称',
   `chinese_name` varchar(128) NOT NULL DEFAULT '' COMMENT '中文名',

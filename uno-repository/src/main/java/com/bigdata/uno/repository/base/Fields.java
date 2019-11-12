@@ -13,6 +13,8 @@ public class Fields {
      */
     public static Field<Long> ID = DSL.field("id", Long.class);
     public static Field<String> NAME = DSL.field("name", String.class);
-    public static Field<Boolean> IS_ADMIN = DSL.field("is_admin", Boolean.class);
+
+    public static Field<Long> PROJECT_ID = DSL.field("project_id", Long.class);
+    public static Field<String> TITLE = DSL.field("title", String.class);
 
 }
