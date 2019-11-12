@@ -12,5 +12,5 @@ public interface UserService {
 
     List<User> queryAll();
 
-    void login(LoginForm loginForm);
+    User login(LoginForm loginForm);
 }

@@ -5,24 +5,28 @@ import com.bigdata.uno.common.model.ModelUtil;
 import com.bigdata.uno.common.model.requirement.Requirement;
 import com.bigdata.uno.common.model.requirement.RequirementPoJo;
 import com.bigdata.uno.common.model.requirement.RequirementStatistic;
+import com.bigdata.uno.common.model.requirement.UpdateRequirement;
 import com.bigdata.uno.common.util.Preconditions;
 import com.bigdata.uno.repository.RequirementRepository;
 import com.bigdata.uno.repository.base.Fields;
+import com.bigdata.uno.service.InfoService;
 import com.bigdata.uno.service.RequirementService;
 import com.google.common.collect.Lists;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class RequirementServiceImpl implements RequirementService {
 
     @Autowired
     private RequirementRepository requirementRepository;
+
+    @Autowired
+    private InfoService infoService;
 
     @Override
     public Requirement queryById(Long id) {
@@ -77,6 +81,7 @@ public class RequirementServiceImpl implements RequirementService {
     @Override
     public List<Requirement> queryByProjectId(Long projectId) {
         List<RequirementPoJo> requirementPoJos = requirementRepository.selectWhere(Fields.PROJECT_ID.eq(projectId));
+        requirementPoJos.sort((o1, o2) -> o1.getStart().before(o2.getStart()) ? 1 : 0);
         List<Requirement> requirements = Lists.newLinkedList();
         requirementPoJos.forEach(requirementPoJo -> {
             Requirement requirement = Requirement.builder().build();
@@ -120,5 +125,35 @@ public class RequirementServiceImpl implements RequirementService {
             }
         });
         return requirementStatistic;
+    }
+
+    @Override
+    public boolean statusFlow(UpdateRequirement updateRequirement) {
+        Preconditions.checkNotNull(updateRequirement.getId(), "id不可为空");
+        RequirementPoJo requirementPoJo = requirementRepository.selectById(updateRequirement.getId());
+        if (requirementPoJo.getStatus() == updateRequirement.getStatus()) {
+            return true;
+        }
+        requirementPoJo.setStatus(updateRequirement.getStatus());
+        requirementRepository.updateNotNullFields(requirementPoJo);
+        return infoService.inform(
+                updateRequirement.getMentions(),
+                "需求状态更新",
+                updateRequirement.getContent()
+        );
+    }
+
+    @Override
+    public boolean updateDate(UpdateRequirement updateRequirement) {
+        Preconditions.checkNotNull(updateRequirement.getId(), "id不可为空");
+        RequirementPoJo requirementPoJo = requirementRepository.selectById(updateRequirement.getId());
+        requirementPoJo.setEnd(updateRequirement.getEnd());
+        requirementPoJo.setStart(updateRequirement.getStart());
+        requirementRepository.updateNotNullFields(requirementPoJo);
+        return infoService.inform(
+                updateRequirement.getMentions(),
+                "需求排期变更",
+                updateRequirement.getContent()
+        );
     }
 }

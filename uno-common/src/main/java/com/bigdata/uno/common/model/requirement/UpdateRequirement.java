@@ -1,9 +1,10 @@
 package com.bigdata.uno.common.model.requirement;
 
-import com.bigdata.uno.common.model.JSONColumn;
-import com.bigdata.uno.common.model.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.util.List;
@@ -12,28 +13,14 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class Requirement extends BaseEntity<Requirement, Long> {
-    private String title;
-
-    private Long projectId;
-
-    private int priority;
-
-    private int type;
-
+public class UpdateRequirement {
+    private Long id;
     private int status;
-
-    private String content;
-
-    @JSONColumn
     private List<String> assignTo;
-
+    private List<String> mentions;
+    private String content;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date start;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date end;
-
-    private String creator;
 }

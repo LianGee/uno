@@ -1,6 +1,7 @@
 package com.bigdata.uno.repository.base;
 
 
+import com.bigdata.uno.common.model.information.InfoPoJo;
 import com.bigdata.uno.common.model.requirement.RequirementPoJo;
 
 import java.awt.*;
@@ -112,6 +113,6 @@ public class RepositoryGenerator {
     }
 
     public static void main(String[] args) {
-        generate("bchen", "requirement", RequirementPoJo.class);
+        generate("bchen", "information", InfoPoJo.class);
     }
 }

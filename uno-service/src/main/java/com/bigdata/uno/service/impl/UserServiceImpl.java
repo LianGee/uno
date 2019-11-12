@@ -43,11 +43,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void login(LoginForm loginForm) {
+    public User login(LoginForm loginForm) {
         User user = userRepository.selectOne(Fields.NAME.eq(loginForm.getUserName()));
         Preconditions.checkNotNull(user, "用户不存在");
         Preconditions.checkEqual(DigestUtils.md5DigestAsHex((loginForm.getPassword() + Constant.MD5_SALT).getBytes()),
                 user.getPassword(),
                 "用户名密码不匹配");
+        return user;
     }
 }
