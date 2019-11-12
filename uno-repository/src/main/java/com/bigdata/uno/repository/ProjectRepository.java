@@ -2,6 +2,7 @@ package com.bigdata.uno.repository;
 
 import java.util.List;
 
+import com.bigdata.uno.common.model.project.ProjectPoJo;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
@@ -11,7 +12,6 @@ import org.jooq.QueryPart;
 import org.springframework.stereotype.Repository;
 
 import com.github.pagehelper.Page;
-import com.bigdata.uno.common.model.project.Project;
 import com.bigdata.uno.repository.base.ListOption;
 import com.bigdata.uno.repository.base.AbstractSqlProvider;
 import com.bigdata.uno.repository.base.BaseRepository;
@@ -23,7 +23,7 @@ import com.bigdata.uno.repository.base.RepositoryGenerator;
  * @author bchen
  */
 @Repository
-public interface ProjectRepository extends BaseRepository<Project> {
+public interface ProjectRepository extends BaseRepository<ProjectPoJo> {
 
     class SqlProvider extends AbstractSqlProvider {
         @Override
@@ -34,33 +34,33 @@ public interface ProjectRepository extends BaseRepository<Project> {
 
     @Override
     @SelectProvider(type = SqlProvider.class, method = "selectById")
-    Project selectById(Long id);
+    ProjectPoJo selectById(Long id);
 
     @Override
     @SelectProvider(type = SqlProvider.class, method = "selectOne")
-    Project selectOne(QueryPart where);
+    ProjectPoJo selectOne(QueryPart where);
 
     @Override
     @SelectProvider(type = SqlProvider.class, method = "selectWhere")
-    List<Project> selectWhere(QueryPart where);
+    List<ProjectPoJo> selectWhere(QueryPart where);
 
     @Override
     @SelectProvider(type = SqlProvider.class, method = "selectAll")
-    List<Project> selectAll();
+    List<ProjectPoJo> selectAll();
 
     @Override
     @InsertProvider(type = SqlProvider.class, method = "insert")
     @Options(useGeneratedKeys = true)
-    int insert(Project entity);
+    int insert(ProjectPoJo entity);
 
     @Override
     @UpdateProvider(type = SqlProvider.class, method = "updateByFields")
-    int updateByFields(@Param("old") Project oldEntity,
-                       @Param("new") Project newEntity);
+    int updateByFields(@Param("old") ProjectPoJo oldEntity,
+                       @Param("new") ProjectPoJo newEntity);
 
     @Override
     @UpdateProvider(type = SqlProvider.class, method = "updateNotNullFields")
-    int updateNotNullFields(Project entity);
+    int updateNotNullFields(ProjectPoJo entity);
 
     @Override
     @UpdateProvider(type = SqlProvider.class, method = "softDelete")
@@ -72,8 +72,8 @@ public interface ProjectRepository extends BaseRepository<Project> {
 
     @Override
     @SelectProvider(type = SqlProvider.class, method = "selectPage")
-    Page<Project> selectPage(@Param("option") ListOption option,
-                             @Param("pageNumKey") Long pageNum,
-                             @Param("pageSizeKey") Long pageSize);
+    Page<ProjectPoJo> selectPage(@Param("option") ListOption option,
+                                 @Param("pageNumKey") Long pageNum,
+                                 @Param("pageSizeKey") Long pageSize);
 
 }

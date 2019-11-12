@@ -1,8 +1,8 @@
 package com.bigdata.uno.service.impl;
 
 import com.bigdata.uno.common.model.ModelUtil;
+import com.bigdata.uno.common.model.business.BusinessPoJo;
 import com.bigdata.uno.common.model.business.Business;
-import com.bigdata.uno.common.model.business.BusinessPojo;
 import com.bigdata.uno.common.util.Preconditions;
 import com.bigdata.uno.repository.BusinessRepository;
 import com.bigdata.uno.repository.base.Fields;
@@ -19,43 +19,43 @@ public class BusinessServiceImpl implements BusinessService {
     private BusinessRepository businessRepository;
 
     @Override
-    public Long save(Business business) {
-        Preconditions.checkNotNull(business.getName(), "业务线名称不可为空");
-        if (business.getId() != null) { //update
-            businessRepository.updateNotNullFields(business);
-            return business.getId();
+    public Long save(BusinessPoJo businessPoJo) {
+        Preconditions.checkNotNull(businessPoJo.getName(), "业务线名称不可为空");
+        if (businessPoJo.getId() != null) { //update
+            businessRepository.updateNotNullFields(businessPoJo);
+            return businessPoJo.getId();
         }
-        businessRepository.insert(business);
-        return businessRepository.selectOne(Fields.NAME.eq(business.getName())).getId();
+        businessRepository.insert(businessPoJo);
+        return businessRepository.selectOne(Fields.NAME.eq(businessPoJo.getName())).getId();
     }
 
     @Override
-    public BusinessPojo queryById(Long id) {
-        Business business = businessRepository.selectOne(Fields.ID.eq(id));
-        BusinessPojo businessPojo = BusinessPojo.builder().build();
-        ModelUtil.modelToPojo(business, businessPojo);
-        return businessPojo;
+    public Business queryById(Long id) {
+        BusinessPoJo businessPoJo = businessRepository.selectOne(Fields.ID.eq(id));
+        Business business = Business.builder().build();
+        ModelUtil.poJoToModel(businessPoJo, business);
+        return business;
     }
 
     @Override
-    public List<BusinessPojo> queryAll() {
-        List<Business> businesses = businessRepository.selectAll();
-        return getBusinessPojos(businesses);
+    public List<Business> queryAll() {
+        List<BusinessPoJo> businessPoJos = businessRepository.selectAll();
+        return getBusinessPojos(businessPoJos);
     }
 
     @Override
-    public List<BusinessPojo> queryByIds(List<Long> ids) {
-        List<Business> businesses = businessRepository.selectWhere(Fields.ID.in(ids));
-        return getBusinessPojos(businesses);
+    public List<Business> queryByIds(List<Long> ids) {
+        List<BusinessPoJo> businessPoJos = businessRepository.selectWhere(Fields.ID.in(ids));
+        return getBusinessPojos(businessPoJos);
     }
 
-    private List<BusinessPojo> getBusinessPojos(List<Business> businesses) {
-        List<BusinessPojo> businessPojos = Lists.newLinkedList();
-        businesses.forEach(business -> {
-            BusinessPojo businessPojo = BusinessPojo.builder().build();
-            ModelUtil.modelToPojo(business, businessPojo);
-            businessPojos.add(businessPojo);
+    private List<Business> getBusinessPojos(List<BusinessPoJo> businessPoJos) {
+        List<Business> businesses = Lists.newLinkedList();
+        businessPoJos.forEach(business -> {
+            Business businessPojo1 = Business.builder().build();
+            ModelUtil.poJoToModel(business, businessPojo1);
+            businesses.add(businessPojo1);
         });
-        return businessPojos;
+        return businesses;
     }
 }

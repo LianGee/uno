@@ -1,9 +1,9 @@
 package com.bigdata.uno.service.impl;
 
 import com.bigdata.uno.common.model.ModelUtil;
-import com.bigdata.uno.common.model.business.BusinessPojo;
+import com.bigdata.uno.common.model.business.Business;
+import com.bigdata.uno.common.model.project.ProjectPoJo;
 import com.bigdata.uno.common.model.project.Project;
-import com.bigdata.uno.common.model.project.ProjectPojo;
 import com.bigdata.uno.common.util.Preconditions;
 import com.bigdata.uno.repository.ProjectRepository;
 import com.bigdata.uno.repository.base.Fields;
@@ -28,36 +28,44 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Long save(Project project) {
         Preconditions.checkNotNull(project.getName(), "服务名不可为空");
+        ProjectPoJo projectPoJo = ProjectPoJo.builder().build();
+        ModelUtil.modelToPoJO(project, projectPoJo);
         if (project.getId() != null) {
-            projectRepository.updateNotNullFields(project);
+            projectRepository.updateNotNullFields(projectPoJo);
             return project.getId();
         }
-        projectRepository.insert(project);
+        projectRepository.insert(projectPoJo);
         return projectRepository.selectOne(Fields.NAME.eq(project.getName())).getId();
     }
 
     @Override
     public Project queryById(Long id) {
-        return projectRepository.selectById(id);
+        ProjectPoJo projectPoJo = projectRepository.selectById(id);
+        if (projectPoJo == null) {
+            return null;
+        }
+        Project project = Project.builder().build();
+        ModelUtil.poJoToModel(projectPoJo, project);
+        return project;
     }
 
     @Override
-    public List<ProjectPojo> queryAll() {
-        List<Project> projects = projectRepository.selectAll();
-        List<ProjectPojo> projectPojos = Lists.newLinkedList();
+    public List<Project> queryAll() {
+        List<ProjectPoJo> projectPoJos = projectRepository.selectAll();
+        List<Project> projects = Lists.newLinkedList();
         List<Long> businessIds = Lists.newLinkedList();
-        projects.forEach(project -> businessIds.add(project.getBusinessId()));
-        List<BusinessPojo> businessPojos = businessService.queryByIds(businessIds);
-        Map<Long, BusinessPojo> businessPojoMap = new HashMap<>();
-        businessPojos.forEach(businessPojo -> {
+        projectPoJos.forEach(project -> businessIds.add(project.getBusinessId()));
+        List<Business> businesses = businessService.queryByIds(businessIds);
+        Map<Long, Business> businessPojoMap = new HashMap<>();
+        businesses.forEach(businessPojo -> {
             businessPojoMap.put(businessPojo.getId(), businessPojo);
         });
-        projects.forEach(project -> {
-            ProjectPojo projectPojo = ProjectPojo.builder().build();
-            ModelUtil.modelToPojo(project, projectPojo);
-            projectPojo.setBusiness(businessPojoMap.get(project.getBusinessId()));
-            projectPojos.add(projectPojo);
+        projectPoJos.forEach(projectPoJo -> {
+            Project project = Project.builder().build();
+            ModelUtil.poJoToModel(projectPoJo, project);
+            project.setBusiness(businessPojoMap.get(projectPoJo.getBusinessId()));
+            projects.add(project);
         });
-        return projectPojos;
+        return projects;
     }
 }

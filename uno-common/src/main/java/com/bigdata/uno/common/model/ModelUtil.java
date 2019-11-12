@@ -10,15 +10,15 @@ import java.util.List;
 import java.util.Map;
 
 public class ModelUtil {
-    public static void modelToPojo(Object model, Object pojo) {
-        if (model == null || pojo == null) {
+    public static void poJoToModel(Object pojo, Object model) {
+        if (pojo == null || model == null) {
             return;
         }
-        List<Field> modelFields = getAllFields(model.getClass());
+        List<Field> pojoFields = getAllFields(pojo.getClass());
         Map<String, Field> modelMap = new HashMap<>();
-        modelFields.forEach(field -> modelMap.put(field.getName(), field));
+        pojoFields.forEach(field -> modelMap.put(field.getName(), field));
         try {
-            for (Field field : getAllFields(pojo.getClass())) {
+            for (Field field : getAllFields(model.getClass())) {
                 field.setAccessible(true);
                 JSONColumn jsonColumn = field.getAnnotation(JSONColumn.class);
                 Field modelField = modelMap.get(field.getName());
@@ -27,9 +27,9 @@ public class ModelUtil {
                 }
                 modelField.setAccessible(true);
                 if (jsonColumn != null) {
-                    field.set(pojo, JSON.parseObject((String) modelField.get(model), field.getGenericType()));
+                    field.set(model, JSON.parseObject((String) modelField.get(pojo), field.getGenericType()));
                 } else {
-                    field.set(pojo, modelField.get(model));
+                    field.set(model, modelField.get(pojo));
                 }
             }
         } catch (IllegalAccessException e) {
@@ -37,15 +37,15 @@ public class ModelUtil {
         }
     }
 
-    public static void pojoToModel(Object pojo, Object model) {
-        if (model == null || pojo == null) {
+    public static void modelToPoJO(Object model, Object pojo) {
+        if (pojo == null || model == null) {
             return;
         }
-        List<Field> modelFields = getAllFields(model.getClass());
+        List<Field> modelFields = getAllFields(pojo.getClass());
         Map<String, Field> modelMap = new HashMap<>();
         modelFields.forEach(field -> modelMap.put(field.getName(), field));
         try {
-            for (Field field : getAllFields(pojo.getClass())) {
+            for (Field field : getAllFields(model.getClass())) {
                 if ("updatedAt".equals(field.getName())
                         || "createdAt".equals(field.getName())
                         || "isDelete".equals(field.getName())) {
@@ -59,9 +59,9 @@ public class ModelUtil {
                 }
                 modelField.setAccessible(true);
                 if (jsonColumn != null) {
-                    modelField.set(model, JSON.toJSONString(field.get(pojo)));
+                    modelField.set(pojo, JSON.toJSONString(field.get(model)));
                 } else {
-                    modelField.set(model, field.get(pojo));
+                    modelField.set(pojo, field.get(model));
                 }
             }
         } catch (IllegalAccessException e) {

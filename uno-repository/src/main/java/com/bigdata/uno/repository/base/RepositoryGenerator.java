@@ -1,7 +1,7 @@
 package com.bigdata.uno.repository.base;
 
 
-import com.bigdata.uno.common.model.business.Business;
+import com.bigdata.uno.common.model.business.BusinessPoJo;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -112,6 +112,6 @@ public class RepositoryGenerator {
     }
 
     public static void main(String[] args) {
-        generate("bchen", "business", Business.class);
+        generate("bchen", "business", BusinessPoJo.class);
     }
 }

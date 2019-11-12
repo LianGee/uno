@@ -2,8 +2,8 @@ package com.bigdata.uno.api.controller;
 
 import com.bigdata.uno.common.model.ModelUtil;
 import com.bigdata.uno.common.model.Response;
+import com.bigdata.uno.common.model.business.BusinessPoJo;
 import com.bigdata.uno.common.model.business.Business;
-import com.bigdata.uno.common.model.business.BusinessPojo;
 import com.bigdata.uno.service.BusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +16,10 @@ public class BusinessController {
     private BusinessService businessService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Response save(@RequestBody BusinessPojo businessPojo) {
-        Business business = Business.builder().build();
-        ModelUtil.pojoToModel(businessPojo, business);
-        return Response.success(businessService.save(business));
+    public Response save(@RequestBody Business business) {
+        BusinessPoJo businessPoJo = BusinessPoJo.builder().build();
+        ModelUtil.modelToPoJO(business, businessPoJo);
+        return Response.success(businessService.save(businessPoJo));
     }
 
     @RequestMapping(value = "/query/{id}", method = RequestMethod.GET)

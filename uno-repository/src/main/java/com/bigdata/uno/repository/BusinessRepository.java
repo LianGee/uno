@@ -2,7 +2,7 @@ package com.bigdata.uno.repository;
 
 import java.util.List;
 
-import com.bigdata.uno.common.model.business.Business;
+import com.bigdata.uno.common.model.business.BusinessPoJo;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
@@ -23,7 +23,7 @@ import com.bigdata.uno.repository.base.RepositoryGenerator;
  * @author bchen
  */
 @Repository
-public interface BusinessRepository extends BaseRepository<Business> {
+public interface BusinessRepository extends BaseRepository<BusinessPoJo> {
 
     class SqlProvider extends AbstractSqlProvider {
         @Override
@@ -34,33 +34,33 @@ public interface BusinessRepository extends BaseRepository<Business> {
 
     @Override
     @SelectProvider(type = SqlProvider.class, method = "selectById")
-    Business selectById(Long id);
+    BusinessPoJo selectById(Long id);
 
     @Override
     @SelectProvider(type = SqlProvider.class, method = "selectOne")
-    Business selectOne(QueryPart where);
+    BusinessPoJo selectOne(QueryPart where);
 
     @Override
     @SelectProvider(type = SqlProvider.class, method = "selectWhere")
-    List<Business> selectWhere(QueryPart where);
+    List<BusinessPoJo> selectWhere(QueryPart where);
 
     @Override
     @SelectProvider(type = SqlProvider.class, method = "selectAll")
-    List<Business> selectAll();
+    List<BusinessPoJo> selectAll();
 
     @Override
     @InsertProvider(type = SqlProvider.class, method = "insert")
     @Options(useGeneratedKeys = true)
-    int insert(Business entity);
+    int insert(BusinessPoJo entity);
 
     @Override
     @UpdateProvider(type = SqlProvider.class, method = "updateByFields")
-    int updateByFields(@Param("old") Business oldEntity,
-                       @Param("new") Business newEntity);
+    int updateByFields(@Param("old") BusinessPoJo oldEntity,
+                       @Param("new") BusinessPoJo newEntity);
 
     @Override
     @UpdateProvider(type = SqlProvider.class, method = "updateNotNullFields")
-    int updateNotNullFields(Business entity);
+    int updateNotNullFields(BusinessPoJo entity);
 
     @Override
     @UpdateProvider(type = SqlProvider.class, method = "softDelete")
@@ -72,8 +72,8 @@ public interface BusinessRepository extends BaseRepository<Business> {
 
     @Override
     @SelectProvider(type = SqlProvider.class, method = "selectPage")
-    Page<Business> selectPage(@Param("option") ListOption option,
-                              @Param("pageNumKey") Long pageNum,
-                              @Param("pageSizeKey") Long pageSize);
+    Page<BusinessPoJo> selectPage(@Param("option") ListOption option,
+                                  @Param("pageNumKey") Long pageNum,
+                                  @Param("pageSizeKey") Long pageSize);
 
 }

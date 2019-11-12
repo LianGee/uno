@@ -1,16 +1,16 @@
 package com.bigdata.uno.service;
 
+import com.bigdata.uno.common.model.business.BusinessPoJo;
 import com.bigdata.uno.common.model.business.Business;
-import com.bigdata.uno.common.model.business.BusinessPojo;
 
 import java.util.List;
 
 public interface BusinessService {
-    Long save(Business business);
+    Long save(BusinessPoJo businessPoJo);
 
-    BusinessPojo queryById(Long id);
+    Business queryById(Long id);
 
-    List<BusinessPojo> queryAll();
+    List<Business> queryAll();
 
-    List<BusinessPojo> queryByIds(List<Long> ids);
+    List<Business> queryByIds(List<Long> ids);
 }

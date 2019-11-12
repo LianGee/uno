@@ -1,10 +1,8 @@
 package com.bigdata.uno.common.model.business;
 
-import com.bigdata.uno.common.model.JSONColumn;
 import com.bigdata.uno.common.model.base.BaseEntity;
+import com.bigdata.uno.common.model.base.Column;
 import lombok.*;
-
-import java.util.List;
 
 @Data
 @Builder
@@ -12,9 +10,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class BusinessPojo extends BaseEntity<BusinessPojo, Long> {
+public class BusinessPoJo extends BaseEntity<BusinessPoJo, Long> {
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "chinese_name")
     private String chineseName;
-    @JSONColumn
-    private List<String> owner;
+
+    @Column(name = "owner")
+    private String  owner;
 }
