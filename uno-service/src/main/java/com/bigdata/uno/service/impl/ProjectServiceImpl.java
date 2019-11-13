@@ -30,6 +30,8 @@ public class ProjectServiceImpl implements ProjectService {
         Preconditions.checkNotNull(project.getName(), "服务名不可为空");
         ProjectPoJo projectPoJo = ProjectPoJo.builder().build();
         ModelUtil.modelToPoJO(project, projectPoJo);
+        Preconditions.checkNotNull(project.getBusinessId(), "项目组不可为空");
+        Preconditions.checkNotNull(businessService.queryById(project.getBusinessId()), "项目组不存在");
         if (project.getId() != null) {
             projectRepository.updateNotNullFields(projectPoJo);
             return project.getId();
