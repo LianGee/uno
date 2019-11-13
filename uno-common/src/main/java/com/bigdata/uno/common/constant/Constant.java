@@ -11,8 +11,9 @@ public interface Constant {
         int TO_TEST = 3; //转测试
         int TESTING = 4; //测试中
         int TO_CHECK = 5; //转验收
-        int CHECKED = 6; //验收通过
-        int ACCEPTED = 7; //已交付
+        int CHECKING = 6; //验收中
+        int CHECKED = 7; //验收通过
+        int ACCEPTED = 8; //已交付
     }
 
     interface RequirementType {

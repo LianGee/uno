@@ -23,4 +23,6 @@ public interface RequirementService {
     boolean updateDate(UpdateRequirement updateRequirement);
 
     List<Info> queryComments(Long id);
+
+    Long addComment(Info info);
 }

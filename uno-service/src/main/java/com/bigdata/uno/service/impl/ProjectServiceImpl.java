@@ -32,6 +32,7 @@ public class ProjectServiceImpl implements ProjectService {
         ModelUtil.modelToPoJO(project, projectPoJo);
         Preconditions.checkNotNull(project.getBusinessId(), "项目组不可为空");
         Preconditions.checkNotNull(businessService.queryById(project.getBusinessId()), "项目组不存在");
+        Preconditions.checkArgument(project.getOwner().size() >= 2, "负责人不得少于两个");
         if (project.getId() != null) {
             projectRepository.updateNotNullFields(projectPoJo);
             return project.getId();

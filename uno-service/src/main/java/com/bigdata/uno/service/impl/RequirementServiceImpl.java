@@ -171,4 +171,9 @@ public class RequirementServiceImpl implements RequirementService {
     public List<Info> queryComments(Long id) {
         return infoService.queryInfo(id);
     }
+
+    @Override
+    public Long addComment(Info info) {
+        return infoService.save(info);
+    }
 }
