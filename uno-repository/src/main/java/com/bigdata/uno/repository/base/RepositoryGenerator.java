@@ -1,7 +1,8 @@
 package com.bigdata.uno.repository.base;
 
 
-import com.bigdata.uno.common.model.user.User;
+import com.bigdata.uno.common.model.information.InfoPoJo;
+import com.bigdata.uno.common.model.requirement.RequirementPoJo;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -11,7 +12,7 @@ import java.awt.datatransfer.Transferable;
 /**
  * Repository 代码生成器
  *
- * @author luxun
+ * @author zaoshu
  */
 public class RepositoryGenerator {
     private static final String REPOSITORY_PACKAGE = "com.bigdata.uno.repository";
@@ -76,6 +77,10 @@ public class RepositoryGenerator {
             + "                       @Param(\"new\") {{entity-class-name}} newEntity);\n"
             + "\n"
             + "    @Override\n"
+            + "    @UpdateProvider(type = SqlProvider.class, method = \"updateNotNullFields\")\n"
+            + "    int updateNotNullFields({{entity-class-name}} entity);\n"
+            + "\n"
+            + "    @Override\n"
             + "    @UpdateProvider(type = SqlProvider.class, method = \"softDelete\")\n"
             + "    int delete(Long id);\n"
             + "\n"
@@ -108,8 +113,6 @@ public class RepositoryGenerator {
     }
 
     public static void main(String[] args) {
-
-        generate("bochen", "user", User.class);
-
+        generate("bchen", "information", InfoPoJo.class);
     }
 }

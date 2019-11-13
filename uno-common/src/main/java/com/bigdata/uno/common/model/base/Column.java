@@ -44,5 +44,8 @@ public @interface Column {
      */
     boolean searchable() default false;
 
+    /**
+     * @return 更新时是否忽略
+     */
     boolean ignoreInUpdate() default false;
 }

@@ -1,5 +1,6 @@
 package com.bigdata.uno.service;
 
+import com.bigdata.uno.common.model.user.LoginForm;
 import com.bigdata.uno.common.model.user.User;
 
 import java.util.List;
@@ -7,7 +8,11 @@ import java.util.List;
 public interface UserService {
     Long register(User user);
 
-    User getUserById(Long id);
+    User queryById(Long id);
 
-    List<User> getAllUsers();
+    List<User> queryAll();
+
+    User login(LoginForm loginForm);
+
+    List<User> queryByNames(List<String> names);
 }

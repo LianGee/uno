@@ -25,4 +25,7 @@ public class User extends BaseEntity<User, Long> {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "avatar")
+    private String avatar;
 }

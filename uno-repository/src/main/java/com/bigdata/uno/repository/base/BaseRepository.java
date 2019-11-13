@@ -30,6 +30,8 @@ public interface BaseRepository<T extends BaseEntity> {
     int updateByFields(@Param("old") T oldEntity,
                        @Param("new") T newEntity);
 
+    int updateNotNullFields(T newEntity);
+
     int delete(Long id);
 
     int deleteWhere(QueryPart where);
