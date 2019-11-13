@@ -16,5 +16,6 @@ public class Fields {
 
     public static Field<Long> PROJECT_ID = DSL.field("project_id", Long.class);
     public static Field<String> TITLE = DSL.field("title", String.class);
+    public static Field<Long> REQUIREMENT_ID = DSL.field("requirement_id", Long.class);
 
 }

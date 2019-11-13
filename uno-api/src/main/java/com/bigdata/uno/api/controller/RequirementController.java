@@ -49,4 +49,9 @@ public class RequirementController {
     public Response updateDate(@RequestBody UpdateRequirement updateRequirement) {
         return Response.success(requirementService.updateDate(updateRequirement));
     }
+
+    @ApiMethod(value = "/query/comments")
+    public Response queryComments(@RequestParam Long id) {
+        return Response.success(requirementService.queryComments(id));
+    }
 }

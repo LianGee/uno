@@ -1,5 +1,6 @@
 package com.bigdata.uno.service;
 
+import com.bigdata.uno.common.model.information.Info;
 import com.bigdata.uno.common.model.requirement.Requirement;
 import com.bigdata.uno.common.model.requirement.RequirementStatistic;
 import com.bigdata.uno.common.model.requirement.UpdateRequirement;
@@ -20,4 +21,6 @@ public interface RequirementService {
     boolean statusFlow(UpdateRequirement updateRequirement);
 
     boolean updateDate(UpdateRequirement updateRequirement);
+
+    List<Info> queryComments(Long id);
 }

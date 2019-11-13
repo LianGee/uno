@@ -13,4 +13,6 @@ public interface UserService {
     List<User> queryAll();
 
     User login(LoginForm loginForm);
+
+    List<User> queryByNames(List<String> names);
 }

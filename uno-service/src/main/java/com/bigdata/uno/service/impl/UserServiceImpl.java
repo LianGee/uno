@@ -51,4 +51,9 @@ public class UserServiceImpl implements UserService {
                 "用户名密码不匹配");
         return user;
     }
+
+    @Override
+    public List<User> queryByNames(List<String> names) {
+        return userRepository.selectWhere(Fields.NAME.in(names));
+    }
 }

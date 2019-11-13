@@ -2,6 +2,7 @@ package com.bigdata.uno.service.impl;
 
 import com.bigdata.uno.common.constant.Constant;
 import com.bigdata.uno.common.model.ModelUtil;
+import com.bigdata.uno.common.model.information.Info;
 import com.bigdata.uno.common.model.requirement.Requirement;
 import com.bigdata.uno.common.model.requirement.RequirementPoJo;
 import com.bigdata.uno.common.model.requirement.RequirementStatistic;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RequirementServiceImpl implements RequirementService {
@@ -49,6 +51,12 @@ public class RequirementServiceImpl implements RequirementService {
                         || requirement.getStart().before(requirement.getEnd()),
                 "截止时间必须晚于起始时间"
         );
+        RequirementPoJo requirementPoJo = RequirementPoJo.builder().build();
+        ModelUtil.modelToPoJO(requirement, requirementPoJo);
+        if (requirement.getId() != null) {
+            requirementRepository.updateNotNullFields(requirementPoJo);
+            return requirement.getId();
+        }
         Preconditions.checkNull(
                 requirementRepository.selectOne(
                         Fields.PROJECT_ID.eq(requirement.getProjectId())
@@ -56,12 +64,6 @@ public class RequirementServiceImpl implements RequirementService {
                 ),
                 "标题不可重复"
         );
-        RequirementPoJo requirementPoJo = RequirementPoJo.builder().build();
-        ModelUtil.modelToPoJO(requirement, requirementPoJo);
-        if (requirement.getId() != null) {
-            requirementRepository.updateNotNullFields(requirementPoJo);
-            return requirement.getId();
-        }
         requirementRepository.insert(requirementPoJo);
         return requirementRepository.selectOne(Fields.TITLE.eq(requirement.getTitle())).getId();
     }
@@ -81,7 +83,11 @@ public class RequirementServiceImpl implements RequirementService {
     @Override
     public List<Requirement> queryByProjectId(Long projectId) {
         List<RequirementPoJo> requirementPoJos = requirementRepository.selectWhere(Fields.PROJECT_ID.eq(projectId));
-        requirementPoJos.sort((o1, o2) -> o1.getStart().before(o2.getStart()) ? 1 : 0);
+        requirementPoJos = requirementPoJos.stream()
+                .sorted(
+                        Comparator.comparing(RequirementPoJo::getPriority, Comparator.reverseOrder())
+                                .thenComparing(RequirementPoJo::getStart)
+                ).collect(Collectors.toList());
         List<Requirement> requirements = Lists.newLinkedList();
         requirementPoJos.forEach(requirementPoJo -> {
             Requirement requirement = Requirement.builder().build();
@@ -111,7 +117,7 @@ public class RequirementServiceImpl implements RequirementService {
                     requirementStatistic.setAccepted(requirementStatistic.getAccepted() + 1);
                     break;
                 case Constant.RequirementStatus.CHECKED:
-                    requirementStatistic.setAccepted(requirementStatistic.getFinished() + 1);
+                    requirementStatistic.setFinished(requirementStatistic.getFinished() + 1);
                     break;
             }
             if (requirementPoJo.getStatus() != Constant.RequirementStatus.ACCEPTED) {
@@ -137,6 +143,7 @@ public class RequirementServiceImpl implements RequirementService {
         requirementPoJo.setStatus(updateRequirement.getStatus());
         requirementRepository.updateNotNullFields(requirementPoJo);
         return infoService.inform(
+                "bchen",
                 updateRequirement.getMentions(),
                 "需求状态更新",
                 updateRequirement.getContent()
@@ -151,9 +158,15 @@ public class RequirementServiceImpl implements RequirementService {
         requirementPoJo.setStart(updateRequirement.getStart());
         requirementRepository.updateNotNullFields(requirementPoJo);
         return infoService.inform(
+                "bchen",
                 updateRequirement.getMentions(),
                 "需求排期变更",
                 updateRequirement.getContent()
         );
+    }
+
+    @Override
+    public List<Info> queryComments(Long id) {
+        return infoService.queryInfo(id);
     }
 }
