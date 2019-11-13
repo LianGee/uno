@@ -13,7 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ImportResource({ "classpath*:appcontext-database.xml"})
 @Import(value = {ServiceContext.class})
 @EnableSwagger2
-public class UnoApi {ll
+public class UnoApi {
 
     public static void main(String[] args) {
         SpringApplication.run(UnoApi.class, args);
