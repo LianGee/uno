@@ -14,6 +14,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 @Aspect
 @Component
@@ -37,13 +38,11 @@ public class LogAspect {
             if (apiConfig.requireLog()) {
                 long elapsed = System.currentTimeMillis() - startTime;
                 HttpServletRequest request
-                        = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-                if (request != null) {
-                    String user = loginUtil.getLoginUser();
-                    user = user == null ? "-" : user;
-                    log.info("user: {}, uri: {}, query: {}, success: {}, elapsed: {}ms",
-                            user, request.getRequestURI(), request.getQueryString(), success, elapsed);
-                }
+                        = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+                String user = loginUtil.getLoginUser();
+                user = user == null ? "-" : user;
+                log.info("user: {}, uri: {}, query: {}, success: {}, elapsed: {}ms",
+                        user, request.getRequestURI(), request.getQueryString(), success, elapsed);
             }
         }
     }

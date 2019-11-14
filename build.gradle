@@ -19,7 +19,6 @@ ext {
     reflectionsVersion = '0.9.10'
     swaggerVersion = '2.8.0'
     fastjsonVersion = '1.2.62'
-    keycloakVersion = '7.0.1'
 
     env = System.getProperty("env") == null ? "development" : System.getProperty("env")
 }

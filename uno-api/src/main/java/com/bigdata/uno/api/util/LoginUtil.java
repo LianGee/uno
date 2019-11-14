@@ -1,6 +1,7 @@
 package com.bigdata.uno.api.util;
 
-import org.apache.commons.lang.StringUtils;
+import com.alibaba.fastjson.JSON;
+import com.bigdata.uno.common.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,16 +13,21 @@ public class LoginUtil {
     private HttpServletRequest request;
 
     public String getLoginUser() {
-        if (request.getUserPrincipal() != null) {
-            String name = request.getUserPrincipal().toString();
-            if (!StringUtils.isBlank(name)) {
-                return name;
-            }
+        String userString = (String) request.getSession().getAttribute("user");
+        if (userString != null) {
+            User user = JSON.parseObject(userString, User.class);
+            return user.getName();
         }
+//        if (request.getUserPrincipal() != null) {
+//            String name = request.getUserPrincipal().toString();
+//            if (!StringUtils.isBlank(name)) {
+//                return name;
+//            }
+//        }
 //        String appKey = request.getHeader(Constant.GRANDET_APP_KEY);
 //        if (!StringUtils.isBlank(appKey)) {
 //            return appKey;
 //        }
-        return "bchen";
+        return null;
     }
 }
