@@ -5,6 +5,7 @@ import com.bigdata.uno.common.model.ModelUtil;
 import com.bigdata.uno.common.model.information.Info;
 import com.bigdata.uno.common.model.information.InfoPoJo;
 import com.bigdata.uno.common.model.user.User;
+import com.bigdata.uno.common.util.Preconditions;
 import com.bigdata.uno.repository.InfoRepository;
 import com.bigdata.uno.repository.base.Fields;
 import com.bigdata.uno.service.InfoService;
@@ -13,10 +14,10 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class InfoServiceImpl implements InfoService {
@@ -56,5 +57,26 @@ public class InfoServiceImpl implements InfoService {
             infos.add(info);
         });
         return infos;
+    }
+
+    @Override
+    public Long save(Info info) {
+        Preconditions.checkNotNull(info.getUser(), "创建人不可为空");
+        Preconditions.checkNotNull(info.getContent(), "内容不可为空");
+        Long currentTime = System.currentTimeMillis() / 1000;
+        InfoPoJo infoPoJo = InfoPoJo.builder().build();
+        ModelUtil.modelToPoJO(info, infoPoJo);
+        //暂时先假用户
+        User user = userService.queryByName("bchen");
+        info.setUser(user);
+        infoPoJo.setCreator(info.getUser().getName());
+        if (infoPoJo.getId() != null) {
+            infoRepository.updateNotNullFields(infoPoJo);
+            return infoPoJo.getId();
+        }
+        infoRepository.insert(infoPoJo);
+        return infoRepository.selectOne(
+                Fields.CREATED_AT.gt(currentTime).and(Fields.CREATOR.eq(infoPoJo.getCreator()))
+        ).getId();
     }
 }

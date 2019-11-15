@@ -56,4 +56,9 @@ public class UserServiceImpl implements UserService {
     public List<User> queryByNames(List<String> names) {
         return userRepository.selectWhere(Fields.NAME.in(names));
     }
+
+    @Override
+    public User queryByName(String name) {
+        return userRepository.selectOne(Fields.NAME.eq(name));
+    }
 }

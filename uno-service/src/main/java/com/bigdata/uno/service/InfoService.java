@@ -8,4 +8,6 @@ public interface InfoService {
     boolean inform(String creator, List<String> recipients, String title, String content);
 
     List<Info> queryInfo(Long requirementId);
+
+    Long save(Info info);
 }

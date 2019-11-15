@@ -7,4 +7,12 @@ server:
     mime-types: application/json,application/xml,text/html,text/xml,text/plain
 
 spring.session.store-type: none
-
+spring:
+  main:
+    banner-mode: "off"
+#keycloak:
+#  realm: sse
+#  auth-server-url: http://localhost:8080/auth
+#  ssl-required: external
+#  resource: uno-api
+#  public-client: true

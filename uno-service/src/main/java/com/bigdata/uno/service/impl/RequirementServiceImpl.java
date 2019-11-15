@@ -1,5 +1,6 @@
 package com.bigdata.uno.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.bigdata.uno.common.constant.Constant;
 import com.bigdata.uno.common.model.ModelUtil;
 import com.bigdata.uno.common.model.information.Info;
@@ -141,6 +142,7 @@ public class RequirementServiceImpl implements RequirementService {
             return true;
         }
         requirementPoJo.setStatus(updateRequirement.getStatus());
+        requirementPoJo.setAssignTo(JSON.toJSONString(updateRequirement.getAssignTo()));
         requirementRepository.updateNotNullFields(requirementPoJo);
         return infoService.inform(
                 "bchen",
@@ -168,5 +170,10 @@ public class RequirementServiceImpl implements RequirementService {
     @Override
     public List<Info> queryComments(Long id) {
         return infoService.queryInfo(id);
+    }
+
+    @Override
+    public Long addComment(Info info) {
+        return infoService.save(info);
     }
 }

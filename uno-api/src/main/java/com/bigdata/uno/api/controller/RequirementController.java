@@ -2,6 +2,7 @@ package com.bigdata.uno.api.controller;
 
 import com.bigdata.uno.api.util.ApiMethod;
 import com.bigdata.uno.common.model.Response;
+import com.bigdata.uno.common.model.information.Info;
 import com.bigdata.uno.common.model.requirement.Requirement;
 import com.bigdata.uno.common.model.requirement.UpdateRequirement;
 import com.bigdata.uno.service.RequirementService;
@@ -53,5 +54,10 @@ public class RequirementController {
     @ApiMethod(value = "/query/comments")
     public Response queryComments(@RequestParam Long id) {
         return Response.success(requirementService.queryComments(id));
+    }
+
+    @ApiMethod(value = "/add/comments")
+    public Response addComments(@RequestBody Info info) {
+        return Response.success(requirementService.addComment(info));
     }
 }

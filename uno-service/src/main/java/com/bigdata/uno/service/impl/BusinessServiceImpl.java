@@ -32,6 +32,9 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public Business queryById(Long id) {
         BusinessPoJo businessPoJo = businessRepository.selectOne(Fields.ID.eq(id));
+        if (businessPoJo == null) {
+            return null;
+        }
         Business business = Business.builder().build();
         ModelUtil.poJoToModel(businessPoJo, business);
         return business;

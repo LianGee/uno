@@ -1,5 +1,6 @@
 package com.bigdata.uno.api.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.bigdata.uno.api.util.ApiMethod;
 import com.bigdata.uno.common.model.Response;
 import com.bigdata.uno.common.model.user.LoginForm;
@@ -33,9 +34,11 @@ public class UserController {
         return Response.success(userService.queryById(id));
     }
 
-    @ApiMethod(value = "/login", method = RequestMethod.POST)
-    public Response login(@RequestBody LoginForm loginForm) {
-        return Response.success(userService.login(loginForm));
+    @ApiMethod(value = "/login", method = RequestMethod.POST, requireLogin = false)
+    public Response login(@RequestBody LoginForm loginForm, HttpSession session) {
+        User user = userService.login(loginForm);
+        session.setAttribute("user", JSON.toJSONString(user));
+        return Response.success(user);
     }
 
     @ApiMethod(value = "/current", method = RequestMethod.GET)
