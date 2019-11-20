@@ -10,7 +10,7 @@ import java.util.List;
 public interface RequirementService {
     Requirement queryById(Long id);
 
-    Long save(Requirement requirement);
+    Long save(Requirement requirement, String userName);
 
     List<Requirement> queryAll();
 
@@ -24,5 +24,5 @@ public interface RequirementService {
 
     List<Info> queryComments(Long id);
 
-    Long addComment(Info info);
+    Long addComment(Info info, String userName);
 }

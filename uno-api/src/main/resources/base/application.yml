@@ -10,9 +10,15 @@ spring.session.store-type: none
 spring:
   main:
     banner-mode: "off"
-#keycloak:
-#  realm: sse
-#  auth-server-url: http://localhost:8080/auth
-#  ssl-required: external
-#  resource: uno-api
-#  public-client: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+
+
+cas:
+  server-url-prefix: https://localhost:8443/cas
+  server-login-url: https://localhost:8443/cas/login
+  client-host-url: http://localhost:9577
+  validation-type: cas3
+

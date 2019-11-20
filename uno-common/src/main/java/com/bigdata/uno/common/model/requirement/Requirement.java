@@ -2,6 +2,7 @@ package com.bigdata.uno.common.model.requirement;
 
 import com.bigdata.uno.common.model.JSONColumn;
 import com.bigdata.uno.common.model.base.BaseEntity;
+import com.bigdata.uno.common.model.information.Info;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
@@ -36,4 +37,6 @@ public class Requirement extends BaseEntity<Requirement, Long> {
     private Date end;
 
     private String creator;
+
+    private Info info;
 }

@@ -49,7 +49,9 @@ public class InfoServiceImpl implements InfoService {
         infoPoJos.forEach(infoPoJo -> userNames.add(infoPoJo.getCreator()));
         List<User> users = userService.queryByNames(userNames);
         Map<String, User> userMap = new HashMap<>();
-        users.forEach(user -> userMap.put(user.getName(), user));
+        if (users != null) {
+            users.forEach(user -> userMap.put(user.getName(), user));
+        }
         infoPoJos.forEach(infoPoJo -> {
             Info info = Info.builder().build();
             ModelUtil.poJoToModel(infoPoJo, info);
@@ -63,11 +65,10 @@ public class InfoServiceImpl implements InfoService {
     public Long save(Info info) {
         Preconditions.checkNotNull(info.getUser(), "创建人不可为空");
         Preconditions.checkNotNull(info.getContent(), "内容不可为空");
-        Long currentTime = System.currentTimeMillis() / 1000;
+        Long currentTime = System.currentTimeMillis() / 1000 - 1;
         InfoPoJo infoPoJo = InfoPoJo.builder().build();
         ModelUtil.modelToPoJO(info, infoPoJo);
-        //暂时先假用户
-        User user = userService.queryByName("bchen");
+        User user = userService.queryByName(info.getUser().getName());
         info.setUser(user);
         infoPoJo.setCreator(info.getUser().getName());
         if (infoPoJo.getId() != null) {

@@ -9,6 +9,7 @@ import com.bigdata.uno.repository.UserRepository;
 import com.bigdata.uno.repository.base.Fields;
 import com.bigdata.uno.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -54,6 +55,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> queryByNames(List<String> names) {
+        if (names.size() == 0) {
+            return null;
+        }
         return userRepository.selectWhere(Fields.NAME.in(names));
     }
 
