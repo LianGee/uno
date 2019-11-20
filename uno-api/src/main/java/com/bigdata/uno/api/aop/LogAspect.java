@@ -18,7 +18,7 @@ import java.util.Objects;
 
 @Aspect
 @Component
-@Order(1)
+@Order(2)
 @Slf4j
 public class LogAspect {
 

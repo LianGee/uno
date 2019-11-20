@@ -5,6 +5,8 @@ import com.bigdata.uno.common.model.base.BaseEntity;
 import com.bigdata.uno.common.model.user.User;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,7 +18,7 @@ public class Info extends BaseEntity<Info, Long> {
     private Long requirementId;
 
     @JSONColumn
-    private String recipient;
+    private List<String> recipient;
 
     private String content;
 }

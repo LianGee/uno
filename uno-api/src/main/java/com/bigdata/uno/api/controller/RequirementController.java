@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @ApiMethod(value = "/requirement")
-public class RequirementController {
+public class RequirementController extends BaseController {
 
     @Autowired
     private RequirementService requirementService;
@@ -23,7 +23,7 @@ public class RequirementController {
 
     @ApiMethod(value = "/save", method = RequestMethod.POST)
     public Response save(@RequestBody Requirement requirement) {
-        return Response.success(requirementService.save(requirement));
+        return Response.success(requirementService.save(requirement, loginUtil.getLoginUser()));
     }
 
     @ApiMethod(value = "/query/all", method = RequestMethod.GET)
@@ -48,6 +48,7 @@ public class RequirementController {
 
     @ApiMethod(value = "/update/date", method = RequestMethod.POST)
     public Response updateDate(@RequestBody UpdateRequirement updateRequirement) {
+
         return Response.success(requirementService.updateDate(updateRequirement));
     }
 
@@ -58,6 +59,6 @@ public class RequirementController {
 
     @ApiMethod(value = "/add/comments")
     public Response addComments(@RequestBody Info info) {
-        return Response.success(requirementService.addComment(info));
+        return Response.success(requirementService.addComment(info, loginUtil.getLoginUser()));
     }
 }

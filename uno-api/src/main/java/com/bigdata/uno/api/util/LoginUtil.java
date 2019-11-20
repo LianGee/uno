@@ -13,21 +13,8 @@ public class LoginUtil {
     private HttpServletRequest request;
 
     public String getLoginUser() {
-        String userString = (String) request.getSession().getAttribute("user");
-        if (userString != null) {
-            User user = JSON.parseObject(userString, User.class);
-            return user.getName();
-        }
-//        if (request.getUserPrincipal() != null) {
-//            String name = request.getUserPrincipal().toString();
-//            if (!StringUtils.isBlank(name)) {
-//                return name;
-//            }
-//        }
-//        String appKey = request.getHeader(Constant.GRANDET_APP_KEY);
-//        if (!StringUtils.isBlank(appKey)) {
-//            return appKey;
-//        }
-        return null;
+        String userString = request.isRequestedSessionIdValid() ? (String) request.getSession().getAttribute("user") : null;
+        User user = JSON.parseObject(userString, User.class);
+        return user == null ? null : user.getName();
     }
 }

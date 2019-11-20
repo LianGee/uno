@@ -8,6 +8,7 @@ import com.bigdata.uno.common.model.requirement.Requirement;
 import com.bigdata.uno.common.model.requirement.RequirementPoJo;
 import com.bigdata.uno.common.model.requirement.RequirementStatistic;
 import com.bigdata.uno.common.model.requirement.UpdateRequirement;
+import com.bigdata.uno.common.model.user.User;
 import com.bigdata.uno.common.util.Preconditions;
 import com.bigdata.uno.repository.RequirementRepository;
 import com.bigdata.uno.repository.base.Fields;
@@ -43,7 +44,7 @@ public class RequirementServiceImpl implements RequirementService {
     }
 
     @Override
-    public Long save(Requirement requirement) {
+    public Long save(Requirement requirement, String userName) {
         Preconditions.checkNotNull(requirement.getTitle(), "标题不可为空");
         Preconditions.checkNotNull(requirement.getProjectId(), "项目Id不可为空");
         Preconditions.checkNotNull(requirement.getCreator(), "创建者不可为空");
@@ -52,6 +53,9 @@ public class RequirementServiceImpl implements RequirementService {
                         || requirement.getStart().before(requirement.getEnd()),
                 "截止时间必须晚于起始时间"
         );
+        if (requirement.getInfo() != null && requirement.getInfo().getContent() != null) {
+            addComment(requirement.getInfo(), userName);
+        }
         RequirementPoJo requirementPoJo = RequirementPoJo.builder().build();
         ModelUtil.modelToPoJO(requirement, requirementPoJo);
         if (requirement.getId() != null) {
@@ -173,7 +177,8 @@ public class RequirementServiceImpl implements RequirementService {
     }
 
     @Override
-    public Long addComment(Info info) {
+    public Long addComment(Info info, String userName) {
+        info.setUser(User.builder().name(userName).build());
         return infoService.save(info);
     }
 }
