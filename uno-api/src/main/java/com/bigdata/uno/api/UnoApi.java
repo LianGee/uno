@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -16,7 +17,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ImportResource({ "classpath*:appcontext-database.xml"})
 @Import(value = {ServiceContext.class})
 @EnableSwagger2
-@EnableCasClient
 public class UnoApi implements WebMvcConfigurer {
 
     @Override
@@ -25,7 +25,7 @@ public class UnoApi implements WebMvcConfigurer {
                 .allowedOrigins("*")
                 .allowedMethods("*")
                 .allowCredentials(true)
-                .maxAge(3600)
+                .maxAge(3600).exposedHeaders(HttpHeaders.SET_COOKIE)
                 .allowedHeaders("*");
     }
 
