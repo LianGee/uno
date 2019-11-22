@@ -128,10 +128,12 @@ public class RequirementServiceImpl implements RequirementService {
             if (requirementPoJo.getStatus() != Constant.RequirementStatus.ACCEPTED) {
                 requirementStatistic.setTotal(requirementStatistic.getTotal() + 1);
             }
-            if (requirementPoJo.getEnd().after(DateTime.now().toDate())) {
+            if (requirementPoJo.getStatus() != Constant.RequirementStatus.ACCEPTED
+                    && requirementPoJo.getEnd().before(DateTime.now().toDate())) {
                 requirementStatistic.setDelay(requirementStatistic.getDelay() + 1);
             }
-            if (requirementPoJo.getType() == Constant.RequirementType.BUG) {
+            if (requirementPoJo.getStatus() != Constant.RequirementStatus.ACCEPTED
+                    && requirementPoJo.getType() == Constant.RequirementType.BUG) {
                 requirementStatistic.setBug(requirementStatistic.getBug() + 1);
             }
         });

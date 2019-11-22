@@ -15,7 +15,7 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @ Description：
  */
 @Configuration
-public class swagger {
+public class Swagger {
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
