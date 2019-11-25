@@ -68,9 +68,9 @@ allprojects {
     }
 
     dependencies {
-        compile ("org.apache.logging.log4j:log4j-core:$log4jVersion")
-        compile ("org.apache.logging.log4j:log4j-api:$log4jVersion")
-        compile ("org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion")
+        compile("org.apache.logging.log4j:log4j-core:$log4jVersion")
+        compile("org.apache.logging.log4j:log4j-api:$log4jVersion")
+        compile("org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion")
         testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     }
 
@@ -139,6 +139,8 @@ project(":uno-common") {
         compile "org.apache.commons:commons-lang3:$commonsLang3Version"
         compile "org.apache.httpcomponents:httpclient:$httpClientVersion"
         compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+        // https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch
+        compile group: 'org.elasticsearch', name: 'elasticsearch', version: '7.4.2'
     }
 }
 
@@ -151,7 +153,8 @@ project(":uno-repository") {
         compile "mysql:mysql-connector-java:$mysqlConnectorVersion"
         compile "com.alibaba:druid-spring-boot-starter:$druidVersion"
         compile "org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion"
-
+        // https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client
+        compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.4.2'
     }
 }
 

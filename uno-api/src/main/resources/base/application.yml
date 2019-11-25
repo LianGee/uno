@@ -22,3 +22,14 @@ cas:
 
 front:
   url: http://localhost:8000
+
+es:
+  hosts: 127.0.0.1
+  port: 9200
+  schema: http
+  connect-time-out: 1000
+  socket-time-out: 30000
+  connection-request-time-out: 500
+  max-connect-num: 100
+  max-connect-per-route: 100
+
