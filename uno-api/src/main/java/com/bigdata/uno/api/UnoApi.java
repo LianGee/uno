@@ -2,7 +2,6 @@ package com.bigdata.uno.api;
 
 import com.bigdata.uno.service.ServiceContext;
 import lombok.extern.slf4j.Slf4j;
-import net.unicon.cas.client.configuration.EnableCasClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;

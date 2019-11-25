@@ -26,6 +26,9 @@ public class UserController extends BaseController {
     @Value("${cas.server-url-prefix}")
     private volatile String CAS_URL;
 
+    @Value("${front.url}")
+    private volatile String FRONT_URL;
+
     @ApiMethod(value = "/register", method = RequestMethod.POST)
     public Response register(@RequestBody User user) {
         return Response.success(userService.register(user));
@@ -50,7 +53,7 @@ public class UserController extends BaseController {
         assert  resp.getServiceResponse().getAuthenticationSuccess().getUser() != null;
         log.info("login:{}", request.getSession().getId());
         request.getSession().setAttribute("user", resp.getServiceResponse().getAuthenticationSuccess().getUser());
-        response.sendRedirect("http://localhost:8000/");
+        response.sendRedirect(FRONT_URL);
     }
 
     @ApiMethod(value = "/current", method = RequestMethod.GET)
