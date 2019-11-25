@@ -139,8 +139,6 @@ project(":uno-common") {
         compile "org.apache.commons:commons-lang3:$commonsLang3Version"
         compile "org.apache.httpcomponents:httpclient:$httpClientVersion"
         compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-        compile "net.unicon.cas:cas-client-autoconfig-support:1.5.0-GA"
-
     }
 }
 

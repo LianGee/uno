@@ -18,6 +18,7 @@ spring:
 
 cas:
   server-url-prefix: https://localhost:8443/cas
-  server-login-url: https://localhost:8443/cas/login
-  client-host-url: http://localhost:9577
   validation-type: cas3
+
+front:
+  url: http://localhost:8000
