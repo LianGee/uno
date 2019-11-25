@@ -19,6 +19,7 @@ ext {
     reflectionsVersion = '0.9.10'
     swaggerVersion = '2.8.0'
     fastjsonVersion = '1.2.62'
+    esVersion = '7.4.2'
 
     env = System.getProperty("env") == null ? "development" : System.getProperty("env")
 }
@@ -139,8 +140,7 @@ project(":uno-common") {
         compile "org.apache.commons:commons-lang3:$commonsLang3Version"
         compile "org.apache.httpcomponents:httpclient:$httpClientVersion"
         compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-        // https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch
-        compile group: 'org.elasticsearch', name: 'elasticsearch', version: '7.4.2'
+        compile "org.elasticsearch:elasticsearch:$esVersion"
     }
 }
 
@@ -153,8 +153,7 @@ project(":uno-repository") {
         compile "mysql:mysql-connector-java:$mysqlConnectorVersion"
         compile "com.alibaba:druid-spring-boot-starter:$druidVersion"
         compile "org.springframework.boot:spring-boot-starter-data-redis:$springBootVersion"
-        // https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client
-        compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.4.2'
+        compile "org.elasticsearch.client:elasticsearch-rest-high-level-client:$esVersion"
     }
 }
 
