@@ -1,6 +1,7 @@
 package com.bigdata.uno.repository.base;
 
 
+import com.bigdata.uno.common.model.catalogue.CataloguePoJo;
 import com.bigdata.uno.common.model.information.InfoPoJo;
 import com.bigdata.uno.common.model.requirement.RequirementPoJo;
 
@@ -113,6 +114,6 @@ public class RepositoryGenerator {
     }
 
     public static void main(String[] args) {
-        generate("bchen", "information", InfoPoJo.class);
+        generate("bchen", "catalogue", CataloguePoJo.class);
     }
 }

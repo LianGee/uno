@@ -24,3 +24,47 @@ cas.serviceRegistry.initFromJson=true
   "evaluationOrder": 10000
 }
 ```
+
+## 文档
+文档目录存储在mysql中，内容存储在es中
+
+### es 初始化
+- 创建索引
+```
+curl -X PUT "localhost:9200/uno_doc"
+
+{"acknowledged":true,"shards_acknowledged":true,"index":"uno_doc"}
+```
+- 创建索引的mapping
+```
+# 注意，这里的test_type与url上的test_type名保存一致
+curl -X PUT 'localhost:9200/uno_doc/_mapping/doc' -d ' 
+{
+  "doc": {
+      "properties": {
+        "id": {
+          "type": "long",
+          "index": "not_analyzed"
+        },
+        "title": {
+          "type": "string",
+        },
+        "content": {
+          "type": "string",
+        },
+        "authorName": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "projectId": {
+          "type": "long",
+          "index": "not_analyzed"
+        },
+        "catalogueId": {
+          "type": "long",
+          "index": "not_analyzed"
+        }
+      }
+    }
+  }'
+```
