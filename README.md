@@ -29,42 +29,62 @@ cas.serviceRegistry.initFromJson=true
 文档目录存储在mysql中，内容存储在es中
 
 ### es 初始化
+`使用es version 7.4.2`
 - 创建索引
 ```
 curl -X PUT "localhost:9200/uno_doc"
-
-{"acknowledged":true,"shards_acknowledged":true,"index":"uno_doc"}
+{
+    "acknowledged":true,
+    "shards_acknowledged":true,
+    "index":"uno_doc"
+}
 ```
 - 创建索引的mapping
 ```
-# 注意，这里的test_type与url上的test_type名保存一致
-curl -X PUT 'localhost:9200/uno_doc/_mapping/doc' -d ' 
+curl -X PUT 'localhost:9200/uno_doc/_mapping' -H 'Content-Type: application/json' -d' 
 {
-  "doc": {
+  
       "properties": {
         "id": {
           "type": "long",
-          "index": "not_analyzed"
+          "index": false
         },
         "title": {
-          "type": "string",
+          "type": "text",
+          "index": true
         },
         "content": {
-          "type": "string",
+          "type": "text",
+          "index": true
         },
         "authorName": {
-          "type": "string",
-          "index": "not_analyzed"
+          "type": "keyword",
+          "index": false
+        },
+        "updateBy": {
+          "type": "keyword",
+          "index": false
         },
         "projectId": {
           "type": "long",
-          "index": "not_analyzed"
+          "index": false
         },
         "catalogueId": {
           "type": "long",
-          "index": "not_analyzed"
+          "index": false
+        },
+        "createdAt": {
+          "type": "long",
+          "index": false
+        },
+        "updatedAt": {
+          "type": "long",
+          "index": false
+        },
+        "isDelete": {
+          "type": "boolean",
+          "index": false
         }
       }
-    }
   }'
 ```

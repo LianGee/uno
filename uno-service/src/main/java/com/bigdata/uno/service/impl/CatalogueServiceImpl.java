@@ -25,13 +25,15 @@ public class CatalogueServiceImpl implements CatalogueService {
             catalogue.setChildren(Lists.newLinkedList());
             catalogueMap.get(catalogue.getId()).forEach(childId -> {
                 CataloguePoJo cataloguePoJo = cataloguePoJoMap.get(childId);
-                Catalogue child = Catalogue.builder().build();
+                Catalogue child = Catalogue.builder().children(Lists.newLinkedList()).build();
                 ModelUtil.poJoToModel(cataloguePoJo, child);
                 if (catalogueMap.containsKey(childId)) {
                     buildCatalogue(child, catalogueMap, cataloguePoJoMap);
                 }
                 catalogue.getChildren().add(child);
             });
+        }else {
+            catalogue.setChildren(Lists.newLinkedList());
         }
     }
 
@@ -63,17 +65,21 @@ public class CatalogueServiceImpl implements CatalogueService {
     }
 
     @Override
-    public boolean save(Catalogue catalogue) {
+    public Long save(Catalogue catalogue) {
         Preconditions.checkNotNull(catalogue.getTitle(), "目录名不可为空");
         Preconditions.checkNotNull(catalogue.getProjectId(), "项目Id不可为空");
         CataloguePoJo cataloguePoJo = CataloguePoJo.builder().build();
         ModelUtil.modelToPoJO(catalogue, cataloguePoJo);
         if (catalogue.getId() != null) {
             catalogueRepository.updateNotNullFields(cataloguePoJo);
-        }else {
-            catalogueRepository.insert(cataloguePoJo);
+            return catalogue.getId();
         }
-        return true;
+            catalogueRepository.insert(cataloguePoJo);
+        return catalogueRepository.selectOne(
+                Fields.PROJECT_ID.eq(catalogue.getProjectId())
+                .and(Fields.TITLE.eq(catalogue.getTitle()))
+                .and(Fields.PARENT_ID.eq(catalogue.getParentId()))
+        ).getId();
     }
 
     @Override

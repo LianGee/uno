@@ -21,4 +21,6 @@ public class Fields {
     public static Field<Long> CREATED_AT = DSL.field("created_at", Long.class);
     public static Field<String> CREATOR = DSL.field("creator", String.class);
 
+    public static Field<Long> PARENT_ID = DSL.field("parent_id", Long.class);
+
 }

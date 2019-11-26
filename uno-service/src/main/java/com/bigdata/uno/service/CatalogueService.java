@@ -7,7 +7,7 @@ import java.util.List;
 public interface CatalogueService {
     List<Catalogue> queryByProjectId(Long projectId);
 
-    boolean save(Catalogue catalogue);
+    Long save(Catalogue catalogue);
 
     boolean delete(Long id);
 }
