@@ -32,5 +32,5 @@ es:
   connection-request-time-out: 500
   max-connect-num: 100
   max-connect-per-route: 100
-  doc-index: uno-doc
+  doc-index: uno_doc
 

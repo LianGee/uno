@@ -32,7 +32,7 @@ public class CatalogueServiceImpl implements CatalogueService {
                 }
                 catalogue.getChildren().add(child);
             });
-        }else {
+        } else {
             catalogue.setChildren(Lists.newLinkedList());
         }
     }
@@ -74,12 +74,18 @@ public class CatalogueServiceImpl implements CatalogueService {
             catalogueRepository.updateNotNullFields(cataloguePoJo);
             return catalogue.getId();
         }
-            catalogueRepository.insert(cataloguePoJo);
-        return catalogueRepository.selectOne(
+        Preconditions.checkNull(catalogueRepository.selectOne(
                 Fields.PROJECT_ID.eq(catalogue.getProjectId())
-                .and(Fields.TITLE.eq(catalogue.getTitle()))
-                .and(Fields.PARENT_ID.eq(catalogue.getParentId()))
-        ).getId();
+                        .and(Fields.TITLE.eq(catalogue.getTitle()))
+                        .and(Fields.PARENT_ID.eq(catalogue.getParentId()))
+        ), String.format("目录已存在，请修改目录名：%s", catalogue.getTitle()));
+        catalogueRepository.insert(cataloguePoJo);
+        CataloguePoJo curr = catalogueRepository.selectOne(
+                Fields.PROJECT_ID.eq(catalogue.getProjectId())
+                        .and(Fields.TITLE.eq(catalogue.getTitle()))
+                        .and(Fields.PARENT_ID.eq(catalogue.getParentId()))
+        );
+        return curr.getId();
     }
 
     @Override
